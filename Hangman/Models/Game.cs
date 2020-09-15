@@ -1,6 +1,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 namespace Hangman.Models
 {
     
@@ -9,25 +10,34 @@ namespace Hangman.Models
         public char[] Word {get;set;}
         public char[] Solution {get;set;}
         
-        public int WrongGuesses {get;set;} 
-        public static string[] words = new string[]{"backwards, movement, shadow, lustre, polish, groove"};
+        public int WrongGuesses {get;set;}
+        public string Message {get;set;}
+        public static Game Current {get;set;}  
+        public static string[] words = new string[]{"backwards", "movement", "shadow", "lustre", "polish", "groove"};
 
         public List<char> Guesses = new List<char>(); 
         public static string GetRandomWord()
         {
+           
             Random rnd = new Random();
+            
             int r = rnd.Next(words.Length);
+           
             return words[r];
         }
         public Game(string str)
         {
+            Message = "";
             Word = str.ToCharArray();
             Solution = new char[str.Length];
+            Solution = Solution.Select(x => x='_').ToArray();
+            Current = this;
         }
-        
-        
+    
+
         public void Guess(char ch)
         {
+            
             Guesses.Add(ch);
             if(IsCharInWord(ch))
             {
@@ -55,14 +65,14 @@ namespace Hangman.Models
             {
                 int index = Array.IndexOf(Word, ch);
                 if (index < 0) break;
-                Word[index] =  '\0';
+                Word[index] =  '_';
                 Solution[index] = ch;
             }  
         }
 
         public bool HasWon()
         {
-            if(Array.IndexOf(Solution,'\0') < 0)
+            if(Array.IndexOf(Solution,'_') < 0)
             {
                 return true;
             }

@@ -1,0 +1,14 @@
+@using System;
+
+<h1>@string.Concat(Model.Solution)</h1>
+
+<h2>Current Guesses</h2>
+<h2>@string.Concat(Model.Guesses)</h2>
+@if(Model.Message != ""){
+  <h3>@Model.Message</h3>
+}
+<form action="/hangman" method="post">
+  <label for="guess">Guess a single letter</label>
+  <input type="text" name="guess" id="guess" maxlength="1" required>
+  <button type="submit">Guess</button>
+</form>

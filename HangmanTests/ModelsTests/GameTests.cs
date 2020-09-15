@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 using Hangman.Models;
 
 
@@ -14,11 +15,13 @@ namespace HangmanTests.ModelsTests
         [TestMethod]
         public void GetRandomWord_RandomWordIsInList_ReturnsTrue()
         {
+             Game g = new Game("string");
             //act
             string str = Game.GetRandomWord();
             int num = Array.IndexOf(Game.words,str);
-
+           
             bool b = (num >= 0);
+            
             Assert.AreEqual(true,b);
         }
 
@@ -28,7 +31,7 @@ namespace HangmanTests.ModelsTests
             //arrange
            Game game = new Game("dope");
            char[] eWord = {'d','o','p','e'};
-           char[] eSolution = {'\0','\0','\0','\0'};
+           char[] eSolution = {'_','_','_','_'};
            //act
            char[] aWord = game.Word;
            char[] aSolution = game.Solution;
@@ -68,8 +71,8 @@ namespace HangmanTests.ModelsTests
         {
             //arrange
             Game game = new Game("deep");
-            char[] eWord = {'d','\0','\0','p'};
-            char[] eSolution = {'\0','e','e','\0'};
+            char[] eWord = {'d','_','_','p'};
+            char[] eSolution = {'_','e','e','_'};
             
             //act
             game.MakeChanges('e');
