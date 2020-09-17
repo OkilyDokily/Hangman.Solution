@@ -1,0 +1,19 @@
+img{
+  width: 150px;
+}
+
+.wrong{
+  color:red;
+}
+
+.correct{
+  color:blue;
+}
+
+.spacing {
+  letter-spacing: 5px;
+}
+
+.container{
+  width: 40%;
+}

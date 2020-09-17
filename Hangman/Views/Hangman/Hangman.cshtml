@@ -1,14 +1,34 @@
 @using System;
+@using System.Web;
 
-<h1>@string.Concat(Model.Solution)</h1>
+@{
+  Layout = "_Layout";
+  string result = "";
+}
+<img src=@("/img/Untitled" + Model.WrongGuesses + ".png")>
+<h1 class="spacing">@string.Concat(Model.Solution)</h1>
 
-<h2>Current Guesses</h2>
-<h2>@string.Concat(Model.Guesses)</h2>
+@foreach (Char ch in Model.Guesses)
+{
+    string cssClass = "";
+    string str = ch.ToString();
+    cssClass = (Model.IsCharInSolution(ch)) ? "correct" : "wrong";
+    result += "<span class='"+ cssClass + "'>"+str+"</span>";
+}
+<h3>@Html.Raw(result)</h3>
+
 @if(Model.Message != ""){
   <h3>@Model.Message</h3>
 }
-<form action="/hangman" method="post">
-  <label for="guess">Guess a single letter</label>
-  <input type="text" name="guess" id="guess" maxlength="1" required>
-  <button type="submit">Guess</button>
-</form>
+@if(Model.IsGameOver()){
+  <form action="/hangman/new" method="post">
+  <button type="submit">Play new game.</button>
+  </form>  
+}
+else{
+  <form action="/hangman" method="post">
+    <label for="guess">Guess a single letter</label>
+    <input type="text" name="guess" id="guess" maxlength="1" required>
+    <button type="submit">Guess</button>
+  </form>
+}

@@ -9,7 +9,7 @@ namespace Hangman.Controllers
         public ActionResult Hangman()
         {
             
-            if(Game.Current is null){
+            if((Game.Current is null)){
                 new Game(Game.GetRandomWord());
             }   
             return View(Game.Current);
@@ -30,6 +30,13 @@ namespace Hangman.Controllers
             }
             return RedirectToAction("Hangman");
 
+        }
+
+        [HttpPost("/hangman/new")]
+        public ActionResult New()
+        {
+            Game.Current = null;
+            return RedirectToAction("Hangman");
         }
     }
 }

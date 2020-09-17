@@ -17,12 +17,9 @@ namespace Hangman.Models
 
         public List<char> Guesses = new List<char>(); 
         public static string GetRandomWord()
-        {
-           
+        { 
             Random rnd = new Random();
-            
             int r = rnd.Next(words.Length);
-           
             return words[r];
         }
         public Game(string str)
@@ -37,26 +34,40 @@ namespace Hangman.Models
 
         public void Guess(char ch)
         {
-            
+            if(Guesses.IndexOf(ch) >=0)
+            {
+                Message = "You already guessed that.";
+                return;
+            }
             Guesses.Add(ch);
             if(IsCharInWord(ch))
             {
+                Message = "Nice guess.";
                 MakeChanges(ch);
+                if(HasWon()){
+                    Message = "You won!";
+                }
             }
             else
             {
                 WrongGuesses++;
+                Message = "Nope.";
+                if(WrongGuesses > 5)
+                {
+                    Message = "Sorry, pal. Game Over.";
+                }
+                
             }
         }
 
         public bool IsCharInWord(char ch)
         {
-            int index = Array.IndexOf(Word, ch);
-            if (index >= 0)
-            {
-                return true;
-            }
-            return false;
+            return Array.IndexOf(Word, ch) >= 0;
+        }
+
+         public bool IsCharInSolution(char ch)
+        {
+            return Array.IndexOf(Solution, ch) >= 0;
         }
 
         public void MakeChanges(char ch)
@@ -72,20 +83,13 @@ namespace Hangman.Models
 
         public bool HasWon()
         {
-            if(Array.IndexOf(Solution,'_') < 0)
-            {
-                return true;
-            }
-            return false;
+            return  (Array.IndexOf(Solution,'_') < 0);
+           
         }
 
         public bool IsGameOver()
         {
-            if(WrongGuesses > 5)
-            {
-                return true;
-            }
-            return false;
+            return (WrongGuesses > 5 || HasWon());
         }
     }
 }
